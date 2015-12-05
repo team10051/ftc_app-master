@@ -15,6 +15,7 @@ public class robot extends OpMode {
     final double d = 3.65;//lol
     DcMotor l;
     DcMotor r;
+    DcMotor telearm;
     String xbutt;
     boolean resetting;
 
@@ -23,6 +24,8 @@ public class robot extends OpMode {
         l = hardwareMap.dcMotor.get("left");
         r = hardwareMap.dcMotor.get("right");
         l.setDirection(DcMotor.Direction.REVERSE);
+        telearm = hardwareMap.dcMotor.get("arm");
+        telearm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
     }
 
     @Override
@@ -41,6 +44,10 @@ public class robot extends OpMode {
             l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
             r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
+        if (gamepad1.dpad_up) {
+            telearm.setTargetPosition(telearm.getTargetPosition() + 1);
+        }
+        telearm.setTargetPosition(telearm.getTargetPosition() - (int) gamepad2.left_stick_y);
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
         telemetry.addData("lrotations", l.getCurrentPosition() / 1440.0);
