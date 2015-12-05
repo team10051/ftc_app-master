@@ -22,7 +22,8 @@ public class steeringtowardscolor extends OpMode {
     double bright;
     double prebri;
     int diff = 2;//why an int? idfk man
-    boolean lr;//true = left, false = right
+    boolean lr;//true = left, false = right. which way it should be currently turning.
+    boolean turning;
     Runnable job = new sleeping();
     Thread t = new Thread(job);
 
@@ -48,33 +49,13 @@ public class steeringtowardscolor extends OpMode {
         gr = (sensorRGB.green() * 255) / 800;
         bl = (sensorRGB.blue() * 255) / 800;
         bright = (sensorRGB.alpha() * 255) / 800;
-        if (lr) {
-            if (Math.abs(bright - prebri) < diff) {
-                l.setPower(0);
-                r.setPower(0);
-                lr = false;
-            } else if (bright > prebri) {
-                l.setPower(-1.0);
-                r.setPower(1.0);
-                lr = true;
-            } else {
-                lr = false;
-            }
-        } else if (!lr) {// THIS IS THE DIFFERENCE BETWEEN IF AND ELSE IF! Yay. we will see what works better.
-            if (Math.abs(bright - prebri) < diff) {
-                l.setPower(0);
-                r.setPower(0);
-                lr = true;
-            } else if (bright > prebri) {
-                l.setPower(1.0);
-                r.setPower(-1.0);
-                lr = false;
-            } else {
-                lr = true;
-            }
+        if (turning) {
+
+            //if (bright >)
         }
         if (update) {
             prebri = bright;
+            turning = true;
         }
         telemetry.addData("bright", bright);
         telemetry.addData("prebri", prebri);
@@ -99,5 +80,15 @@ class sleeping implements Runnable {
             e.printStackTrace();
         }
         steeringtowardscolor.update = true;
+    }
+}
+
+enum direction {
+    LEFT(-1, 1), RIGHT(1, -1), CENTER(0, 0);
+    double lwheel;
+    double rwheel;
+    direction(double l, double r) {
+        lwheel=l;
+        rwheel=r;
     }
 }
