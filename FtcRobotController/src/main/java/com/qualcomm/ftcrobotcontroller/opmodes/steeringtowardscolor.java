@@ -21,6 +21,7 @@ public class steeringtowardscolor extends OpMode {
     double bl;
     double bright;
     double prebri;
+    int diff = 2;//why an int? idfk man
     boolean lr;//true = left, false = right
     Runnable job = new sleeping();
     Thread t = new Thread(job);
@@ -48,7 +49,7 @@ public class steeringtowardscolor extends OpMode {
         bl = (sensorRGB.blue() * 255) / 800;
         bright = (sensorRGB.alpha() * 255) / 800;
         if (lr) {
-            if (Math.abs(bright - prebri) < 0) {
+            if (Math.abs(bright - prebri) < diff) {
                 l.setPower(0);
                 r.setPower(0);
                 lr = false;
@@ -60,7 +61,7 @@ public class steeringtowardscolor extends OpMode {
                 lr = false;
             }
         } else if (!lr) {// THIS IS THE DIFFERENCE BETWEEN IF AND ELSE IF! Yay. we will see what works better.
-            if (Math.abs(bright - prebri) < 0) {
+            if (Math.abs(bright - prebri) < diff) {
                 l.setPower(0);
                 r.setPower(0);
                 lr = true;
