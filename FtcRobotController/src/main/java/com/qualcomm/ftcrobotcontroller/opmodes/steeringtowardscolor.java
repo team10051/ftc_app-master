@@ -22,8 +22,9 @@ public class steeringtowardscolor extends OpMode {
     double bright;
     double prebri;
     int diff = 2;//why an int? idfk man
-    boolean lr;//true = left, false = right. which way it should be currently turning.
-    boolean turning;
+    direction lr;//which way it should be currently turning.
+    boolean turning;//should the robot be turning toward the light?
+    direction lightdir;//the direction it thinks the light is in at beginning of 'update' cycle
     Runnable job = new sleeping();
     Thread t = new Thread(job);
 
@@ -42,6 +43,7 @@ public class steeringtowardscolor extends OpMode {
 
     public void start() {
         t.start();
+        lr = direction.STOP;
     }
 
     public void loop() {
@@ -50,8 +52,9 @@ public class steeringtowardscolor extends OpMode {
         bl = (sensorRGB.blue() * 255) / 800;
         bright = (sensorRGB.alpha() * 255) / 800;
         if (turning) {
+            if (bright > prebri) {
 
-            //if (bright >)
+            }
         }
         if (update) {
             prebri = bright;
@@ -61,6 +64,11 @@ public class steeringtowardscolor extends OpMode {
         telemetry.addData("prebri", prebri);
         telemetry.addData("l=true, r=false", lr);
         telemetry.addData("update", update);
+    }
+
+    void setMotors(direction d) {
+        l.setPower(d.lwheel);
+        r.setPower(d.rwheel);
     }
 }
 
@@ -84,11 +92,19 @@ class sleeping implements Runnable {
 }
 
 enum direction {
-    LEFT(-1, 1), RIGHT(1, -1), CENTER(0, 0);
+    LEFT(-1, 1), RIGHT(1, -1), STOP(0, 0);
     double lwheel;
     double rwheel;
+
     direction(double l, double r) {
-        lwheel=l;
-        rwheel=r;
+        lwheel = l;
+        rwheel = r;
+    }
+
+    void switchDir() {
+        if (this == LEFT) {
+
+
+        }
     }
 }
