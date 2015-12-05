@@ -44,7 +44,7 @@ public class steeringtowardscolor extends OpMode {
     }
 
     public void loop() {
-        re = (sensorRGB.red() * 255) / 800;
+        re = (sensorRGB.red() * 255) / 800;//dangit android studio
         gr = (sensorRGB.green() * 255) / 800;
         bl = (sensorRGB.blue() * 255) / 800;
         bright = (sensorRGB.alpha() * 255) / 800;
