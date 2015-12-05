@@ -45,7 +45,7 @@ public class steeringtowardscolor extends OpMode {
     public void loop() {
         re = (sensorRGB.red() * 255) / 800;
         gr = (sensorRGB.green() * 255) / 800;
-        bl = (sensorRGB.blue() * 255) / 800;
+        bl = (sensorRGB.blue() * 255) / 800;//testing
         bright = (sensorRGB.alpha() * 255) / 800;
         if (lr) {
             if (Math.abs(bright - prebri) < 0) {
