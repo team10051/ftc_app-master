@@ -51,11 +51,11 @@ public class steeringtowardscolor extends OpMode {
         gr = (sensorRGB.green() * 255) / 800;
         bl = (sensorRGB.blue() * 255) / 800;
         bright = (sensorRGB.alpha() * 255) / 800;
-        if (turning) {
+        /*if (turning) {
             if (bright > prebri) {
-
+                
             }
-        }
+        }*/ //this is a thing
         if (update) {
             prebri = bright;
             turning = true;
@@ -95,6 +95,7 @@ enum direction {
     LEFT(-1, 1), RIGHT(1, -1), STOP(0, 0);
     double lwheel;
     double rwheel;
+    static double turnspeed;
 
     direction(double l, double r) {
         lwheel = l;
@@ -103,8 +104,7 @@ enum direction {
 
     void switchDir() {
         if (this == LEFT) {
-
-
+            this.direction = RIGHT;
         }
     }
 }
