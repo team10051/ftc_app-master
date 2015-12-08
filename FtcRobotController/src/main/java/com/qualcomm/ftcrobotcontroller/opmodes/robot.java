@@ -16,6 +16,10 @@ public class robot extends OpMode {
     DcMotor l;
     DcMotor r;
     DcMotor telearm;
+    Servo lf;
+    Servo lb;
+    Servo rf;
+    Servo rb;
     String xbutt;
     boolean resetting;
 
@@ -47,6 +51,7 @@ public class robot extends OpMode {
         if (gamepad1.dpad_up) {
             telearm.setTargetPosition(telearm.getTargetPosition() + 1);
         }
+        telearm.setPower(0.5);
         telearm.setTargetPosition(telearm.getTargetPosition() - (int) gamepad2.left_stick_y);
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
