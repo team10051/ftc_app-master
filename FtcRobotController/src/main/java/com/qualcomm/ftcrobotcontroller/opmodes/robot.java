@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
 /**
@@ -20,8 +21,13 @@ public class robot extends OpMode {
     Servo lb;
     Servo rf;
     Servo rb;
-    double servodown;//from -1 to 1
-    double servoup;//from -1 to 1
+    TouchSensor lim;
+    final double servodownleft = 0.40392156862;//from 0 to 1
+    final double servoupleft = 0.03921568627;//from 0 to 1
+    final double servodownright = 0.43137254902;//from 0 to 1
+    final double servoupright = 1.0;//from 0 to 1
+    final double armupperlim = 380;
+    final double armlowerlim = 0;
     String xbutt;
     boolean resetting;
 
@@ -31,7 +37,25 @@ public class robot extends OpMode {
         r = hardwareMap.dcMotor.get("right");
         l.setDirection(DcMotor.Direction.REVERSE);
         telearm = hardwareMap.dcMotor.get("arm");
-        telearm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+        lim = hardwareMap.touchSensor.get("lim");
+    }
+
+    public void init_loop() {
+        if (lim.isPressed()) {
+            telearm.setPower(0);
+            telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        } else {
+            telearm.setPower(-0.25);
+        }
+    }
+
+    @Override
+    public void start() {
+        l.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        r.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
     }
 
     @Override
@@ -54,19 +78,21 @@ public class robot extends OpMode {
             telearm.setTargetPosition(telearm.getTargetPosition() + 1);
         }
         if (gamepad2.dpad_up) {
-            lf.setPosition((servoup+1)/2);
-            lb.setPosition((servoup+1)/2);
-            rf.setPosition((servoup+1)/2);
-            rb.setPosition((servoup+1)/2);
+            lf.setPosition(servoupleft);
+            lb.setPosition(servoupleft);
+            rf.setPosition(servoupright);
+            rb.setPosition(servoupright);
         }
         if (gamepad2.dpad_down) {
-            lf.setPosition((servodown+1)/2);
-            lb.setPosition((servodown+1)/2);
-            rf.setPosition((servodown+1)/2);
-            rb.setPosition((servodown+1)/2);
+            lf.setPosition(servodownleft);
+            lb.setPosition(servodownleft);
+            rf.setPosition(servodownright);
+            rb.setPosition(servodownright);
         }
-        telearm.setPower(0.5);
-        telearm.setTargetPosition(telearm.getTargetPosition() - (int) gamepad2.left_stick_y);
+        if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
+            telearm.setPower(-gamepad2.left_stick_y);
+        }
+        telemetry.addData("arm position", telearm.getCurrentPosition());
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
         telemetry.addData("lrotations", l.getCurrentPosition() / 1440.0);
