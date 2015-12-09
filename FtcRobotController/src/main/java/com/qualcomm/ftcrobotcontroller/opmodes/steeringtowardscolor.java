@@ -105,6 +105,8 @@ enum direction {
     void switchDir() {
         if (this == LEFT) {
             this.direction = RIGHT;
+        } else if (this == RIGHT) {
+            this.direction= LEFT;// this probably won't work but it is worth testing
         }
     }
 }
