@@ -20,6 +20,8 @@ public class robot extends OpMode {
     Servo lb;
     Servo rf;
     Servo rb;
+    double servodown;//from -1 to 1
+    double servoup;//from -1 to 1
     String xbutt;
     boolean resetting;
 
@@ -50,6 +52,18 @@ public class robot extends OpMode {
         }
         if (gamepad1.dpad_up) {
             telearm.setTargetPosition(telearm.getTargetPosition() + 1);
+        }
+        if (gamepad2.dpad_up) {
+            lf.setTargetPosition((servoup+1)/2);
+            lb.setTargetPosition((servoup+1)/2);
+            rf.setTargetPosition((servoup+1)/2);
+            rb.setTargetPosition((servoup+1)/2);
+        }
+        if (gamepad2.dpad_down) {
+            lf.setTargetPosition((servodown+1)/2);
+            lb.setTargetPosition((servodown+1)/2);
+            rf.setTargetPosition((servodown+1)/2);
+            rb.setTargetPosition((servodown+1)/2);
         }
         telearm.setPower(0.5);
         telearm.setTargetPosition(telearm.getTargetPosition() - (int) gamepad2.left_stick_y);
