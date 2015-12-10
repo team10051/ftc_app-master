@@ -17,6 +17,7 @@ public class robot extends OpMode {
     DcMotor l;
     DcMotor r;
     DcMotor telearm;
+    DcMotor extend;
     Servo lf;
     Servo lb;
     Servo rf;
@@ -38,6 +39,8 @@ public class robot extends OpMode {
         l.setDirection(DcMotor.Direction.REVERSE);
         telearm = hardwareMap.dcMotor.get("arm");
         lim = hardwareMap.touchSensor.get("lim");
+        extend = hardwareMap.dcMotor.get("extend");
+        extend.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
     }
 
     public void init_loop() {
@@ -45,6 +48,8 @@ public class robot extends OpMode {
             telearm.setPower(0);
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+            extend.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+            extend.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         } else {
             telearm.setPower(-0.25);
         }
@@ -91,7 +96,9 @@ public class robot extends OpMode {
         }
         if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
             telearm.setPower(-gamepad2.left_stick_y);
+            extend.setTargetPosition(extend.getCurrentPosition() + (int) (gamepad2.right_stick_y * 2));
         }
+        telemetry.addData("extended by:", "");
         telemetry.addData("arm position", telearm.getCurrentPosition());
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
