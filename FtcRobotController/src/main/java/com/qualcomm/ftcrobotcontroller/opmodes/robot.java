@@ -51,7 +51,7 @@ public class robot extends OpMode {
             extend.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             extend.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         } else {
-            telearm.setPower(-0.25);
+            telearm.setPower(-0.1);
         }
     }
 
@@ -61,6 +61,7 @@ public class robot extends OpMode {
         r.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        telearm.setPower(0);
     }
 
     @Override
@@ -95,10 +96,24 @@ public class robot extends OpMode {
             rb.setPosition(servodownright);
         }
         if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
-            telearm.setPower(-gamepad2.left_stick_y);
-            extend.setTargetPosition(extend.getCurrentPosition() + (int) (gamepad2.right_stick_y * 2));
+            telearm.setPower(-2 * gamepad2.left_stick_y);
+
+        } else {
+            telearm.setPower(0);
+            extend.setTargetPosition(0);
         }
-        telemetry.addData("extended by:", "");
+        if (gamepad2.a) {
+            telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
+        }
+        if (telearm.getTargetPosition() != 0) {
+            telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+        }
+        if (gamepad2.right_stick_y < 0) {
+            extend.setPower(-0.25 * gamepad2.right_stick_y);
+        } else if (gamepad2.right_stick_y > 0) {
+            extend.setPower(-0.1 * gamepad2.right_stick_y);
+        }
+        telemetry.addData("extended by:", extend.getCurrentPosition());
         telemetry.addData("arm position", telearm.getCurrentPosition());
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
