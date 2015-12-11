@@ -40,7 +40,6 @@ public class robot extends OpMode {
         telearm = hardwareMap.dcMotor.get("arm");
         lim = hardwareMap.touchSensor.get("lim");
         extend = hardwareMap.dcMotor.get("extend");
-        extend.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
     }
 
     public void init_loop() {
@@ -48,8 +47,6 @@ public class robot extends OpMode {
             telearm.setPower(0);
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            extend.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            extend.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
         } else {
             telearm.setPower(-0.1);
         }
@@ -95,13 +92,12 @@ public class robot extends OpMode {
             rf.setPosition(servodownright);
             rb.setPosition(servodownright);
         }
-        if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
-            telearm.setPower(-2 * gamepad2.left_stick_y);
+        //if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
+        telearm.setPower(-0.25 * gamepad2.left_stick_y);
 
-        } else {
-            telearm.setPower(0);
-            extend.setTargetPosition(0);
-        }
+        //} else {
+        //    telearm.setPower(0);
+        //}
         if (gamepad2.a) {
             telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
