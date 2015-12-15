@@ -89,7 +89,7 @@ public class robot extends OpMode {
             rf.setPosition(servodownright);
         }
         //if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
-        telearm.setPower(-0.25 * gamepad2.left_stick_y);
+        telearm.setPower(-gamepad2.left_stick_y);
 
         //} else {
         //    telearm.setPower(0);
@@ -100,11 +100,12 @@ public class robot extends OpMode {
         if (telearm.getTargetPosition() != 0) {
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         }
-        if (gamepad2.right_stick_y < 0) {
+       /* if (gamepad2.right_stick_y < 0) {
             extend.setPower(-0.25 * gamepad2.right_stick_y);
         } else if (gamepad2.right_stick_y > 0) {
             extend.setPower(-0.1 * gamepad2.right_stick_y);
-        }
+        }*/
+        extend.setPower(gamepad2.right_stick_y);
         telemetry.addData("extended by:", extend.getCurrentPosition());
         telemetry.addData("arm position", telearm.getCurrentPosition());
         telemetry.addData("lposition", l.getCurrentPosition());
