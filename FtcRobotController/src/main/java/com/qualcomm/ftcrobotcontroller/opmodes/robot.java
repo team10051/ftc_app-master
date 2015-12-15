@@ -19,9 +19,7 @@ public class robot extends OpMode {
     DcMotor telearm;
     DcMotor extend;
     Servo lf;
-    Servo lb;
     Servo rf;
-    Servo rb;
     TouchSensor lim;
     final double servodownleft = 0.40392156862;//from 0 to 1
     final double servoupleft = 0.03921568627;//from 0 to 1
@@ -40,6 +38,8 @@ public class robot extends OpMode {
         telearm = hardwareMap.dcMotor.get("arm");
         lim = hardwareMap.touchSensor.get("lim");
         extend = hardwareMap.dcMotor.get("extend");
+        lf = hardwareMap.servo.get("lf");
+        rf = hardwareMap.servo.get("rf");
     }
 
     public void init_loop() {
@@ -82,15 +82,11 @@ public class robot extends OpMode {
         }
         if (gamepad2.dpad_up) {
             lf.setPosition(servoupleft);
-            lb.setPosition(servoupleft);
             rf.setPosition(servoupright);
-            rb.setPosition(servoupright);
         }
         if (gamepad2.dpad_down) {
             lf.setPosition(servodownleft);
-            lb.setPosition(servodownleft);
             rf.setPosition(servodownright);
-            rb.setPosition(servodownright);
         }
         //if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
         telearm.setPower(-0.25 * gamepad2.left_stick_y);
