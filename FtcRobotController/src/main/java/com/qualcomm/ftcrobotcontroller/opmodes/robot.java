@@ -48,7 +48,7 @@ public class robot extends OpMode {
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         } else {
-            telearm.setPower(-0.1);
+            //telearm.setPower(-0.1);
         }
     }
 
@@ -84,7 +84,7 @@ public class robot extends OpMode {
             lf.setPosition(servoupleft);
             rf.setPosition(servoupright);
         }
-        if (gamepad2.dpad_down) {
+        else if (gamepad2.dpad_down) {
             lf.setPosition(servodownleft);
             rf.setPosition(servodownright);
         }
