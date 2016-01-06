@@ -20,6 +20,8 @@ public class servotest extends OpMode {
     public void init() {
         lf = hardwareMap.servo.get("lf");
         rf = hardwareMap.servo.get("rf");
+        lf.setPosition(0.5);
+        lf.setPosition(0.5);
     }
 
     @Override

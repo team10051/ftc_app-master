@@ -65,6 +65,7 @@ public class FtcOpModeRegister implements OpModeRegister {
     manager.register("teleoperated", robot.class);
     manager.register("autonomous", autoauto.class);
     manager.register("go towards the light", steeringtowardscolor.class);
+    manager.register("servo test", servotest.class);
 
     /*
      * Uncomment any of the following lines if you want to register an op mode.

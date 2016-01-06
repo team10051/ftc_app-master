@@ -5,34 +5,34 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;//imports all the cool
 
 /**
  * TeleOp Mode
  * <p/>
  * Enables control of the robot via the gamepad
  */
-public class robot extends OpMode {
-    final double d = 3.65;//lol
-    DcMotor l;
-    DcMotor r;
-    DcMotor telearm;
-    DcMotor extend;
-    Servo lf;
-    Servo rf;
-    TouchSensor lim;
-    final double servodownleft = 0.40392156862;//from 0 to 1
+public class robot extends OpMode {//beginning of code
+    final double d = 3.65;//lol//this is the diameter
+    DcMotor l;//make the left motor
+    DcMotor r;//make the right motor
+    DcMotor telearm;//make the arm up and down
+    DcMotor extend;//make the extend motor
+    Servo lf;//make the left servo
+    Servo rf;//make the right servos
+    TouchSensor lim;//make a touch sensor
+    final double servodownleft = 0.40392156862;//from 0 to 1//values for the servos min and max
     final double servoupleft = 0.03921568627;//from 0 to 1
     final double servodownright = 0.43137254902;//from 0 to 1
     final double servoupright = 1.0;//from 0 to 1
-    final double armupperlim = 380;
+    final double armupperlim = 380;//arm limits
     final double armlowerlim = 0;
-    String xbutt;
+    String xbutt;//i actually kinda forget, its not important
     boolean resetting;
 
     @Override
-    public void init() {
-        l = hardwareMap.dcMotor.get("left");
+    public void init() {//runs once at beginning
+        l = hardwareMap.dcMotor.get("left");//reference all of the things in the config file
         r = hardwareMap.dcMotor.get("right");
         l.setDirection(DcMotor.Direction.REVERSE);
         telearm = hardwareMap.dcMotor.get("arm");
@@ -42,8 +42,8 @@ public class robot extends OpMode {
         rf = hardwareMap.servo.get("rf");
     }
 
-    public void init_loop() {
-        if (lim.isPressed()) {
+    public void init_loop() {//runs at beginning
+        if (lim.isPressed()) {//for resetting encoders at beginning
             telearm.setPower(0);
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
@@ -53,8 +53,8 @@ public class robot extends OpMode {
     }
 
     @Override
-    public void start() {
-        l.setMode(DcMotorController.RunMode.RESET_ENCODERS);
+    public void start() {//runs when start button is pressed
+        l.setMode(DcMotorController.RunMode.RESET_ENCODERS);//stuff for resetting encoders
         r.setMode(DcMotorController.RunMode.RESET_ENCODERS);
         l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
@@ -62,25 +62,25 @@ public class robot extends OpMode {
     }
 
     @Override
-    public void loop() {
-        l.setPower(gamepad1.left_stick_y);
+    public void loop() {//main loop
+        l.setPower(gamepad1.left_stick_y);//set wheels to the joystic positions
         r.setPower(gamepad1.right_stick_y);
         xbutt = "not pressed";
-        if (gamepad1.x) {
+        if (gamepad1.x) {//stuff for resetting encoders
             l.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             r.setMode(DcMotorController.RunMode.RESET_ENCODERS);
             resetting = true;
             xbutt = "pressed";
         }
-        if (resetting && l.getCurrentPosition() == 0 && r.getCurrentPosition() == 0) {
+        if (resetting && l.getCurrentPosition() == 0 && r.getCurrentPosition() == 0) {//stuff for resetting encoders
             resetting = false;
             l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
             r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
-        if (gamepad1.dpad_up) {
+        if (gamepad1.dpad_up) {//set the arm to move up
             telearm.setTargetPosition(telearm.getTargetPosition() + 1);
         }
-        if (gamepad2.dpad_up) {
+        if (gamepad2.dpad_up) {//set the servos to move
             lf.setPosition(servoupleft);
             rf.setPosition(servoupright);
         }
