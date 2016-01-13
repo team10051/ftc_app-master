@@ -42,7 +42,7 @@ public class robot extends OpMode {//beginning of code
         rf = hardwareMap.servo.get("rf");
     }
 
-    public void init_loop() {//runs at beginning
+    /*public void init_loop() {//runs at beginning
         if (lim.isPressed()) {//for resetting encoders at beginning
             telearm.setPower(0);
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -50,7 +50,7 @@ public class robot extends OpMode {//beginning of code
         } else {
             //telearm.setPower(-0.1);
         }
-    }
+    }*/
 
     @Override
     public void start() {//runs when start button is pressed
@@ -65,29 +65,6 @@ public class robot extends OpMode {//beginning of code
     public void loop() {//main loop
         l.setPower(gamepad1.left_stick_y);//set wheels to the joystic positions
         r.setPower(gamepad1.right_stick_y);
-        xbutt = "not pressed";
-        if (gamepad1.x) {//stuff for resetting encoders
-            l.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            r.setMode(DcMotorController.RunMode.RESET_ENCODERS);
-            resetting = true;
-            xbutt = "pressed";
-        }
-        if (resetting && l.getCurrentPosition() == 0 && r.getCurrentPosition() == 0) {//stuff for resetting encoders
-            resetting = false;
-            l.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-            r.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
-        }
-        if (gamepad1.dpad_up) {//set the arm to move up
-            telearm.setTargetPosition(telearm.getTargetPosition() + 1);
-        }
-        if (gamepad2.dpad_up) {//set the servos to move
-            lf.setPosition(servoupleft);
-            rf.setPosition(servoupright);
-        }
-        else if (gamepad2.dpad_down) {
-            lf.setPosition(servodownleft);
-            rf.setPosition(servodownright);
-        }
         //if (telearm.getCurrentPosition() < armupperlim && telearm.getCurrentPosition() > armlowerlim) {
         //telearm.setPower(-gamepad2.left_stick_y);//sets arm to the left stick on gamepad 2
 
@@ -95,7 +72,7 @@ public class robot extends OpMode {//beginning of code
         //    telearm.setPower(0);
         //}
         if (gamepad2.a) {
-            telearm.setMode(DcMotorController.RunMode.RUN_TO_POSITION);
+            telearm.setMode(DcMotorController.RunMode.RUN_USING_ENCODERS);
         }
         if (telearm.getTargetPosition() != 0) {
             telearm.setMode(DcMotorController.RunMode.RESET_ENCODERS);
@@ -105,17 +82,17 @@ public class robot extends OpMode {//beginning of code
         } else if (gamepad2.right_stick_y > 0) {
             extend.setPower(-0.1 * gamepad2.right_stick_y);
         }*/
-        telearm.setTargetPosition((int)((double)telearm.getTargetPosition()- gamepad2.left_stick_y*2));
+        telearm.setPower(gamepad2.left_stick_y);
         extend.setPower(gamepad2.right_stick_y);
         telemetry.addData("extended by:", extend.getCurrentPosition());
         telemetry.addData("arm position", telearm.getCurrentPosition());
+        telemetry.addData("arm target", telearm.getTargetPosition());
         telemetry.addData("lposition", l.getCurrentPosition());
         telemetry.addData("rposition", r.getCurrentPosition());
         telemetry.addData("lrotations", l.getCurrentPosition() / 1440.0);
         telemetry.addData("rrotations", r.getCurrentPosition() / 1440.0);
         telemetry.addData("lfeet", l.getCurrentPosition() / 1440.0 * d * Math.PI / 12);
         telemetry.addData("rfeet", r.getCurrentPosition() / 1440.0 * d * Math.PI / 12);
-        telemetry.addData("x button is ", xbutt);
         telemetry.addData("resetting", resetting);
     }
 }
